@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import axios from 'axios'
 import { useNavigate} from 'react-router-dom'
+import { addPlayer } from '../API'
 
 const BASE_URL = 'https://fsa-puppy-bowl.herokuapp.com/api/bdugger04/players'
 
@@ -24,19 +25,15 @@ export default function NewPlayerForm (){
   async function handleSubmit(event){
     event.preventDefault()
 
-    const payload = {
-      name,
-      breed,
-      imageUrl
+    const playerObject = {
+      name: name,
+      breed: breed,
+      imageUrl: imageUrl
     }
-  
-  try {
-    const {data} = await axios.post(BASE_URL, payload)
+    await addPlayer(playerObject);
     navigate('/')
-
-  } catch (err){
-    console.error(err)
   }
+  
   
 
   // ----------- NEW PLAYER FORM RETURN ------------------
@@ -58,8 +55,9 @@ export default function NewPlayerForm (){
         <input name = 'imageUrl' value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
       </label>
 
-      <button type='button' onClick={clearForm}>Clear Form</button>
+     
       <button type='button' onClick={clearForm}> Clear Form</button>
+      <button type='submit'>Submit</button>
     </form>
   )
-}}
+}
