@@ -1,33 +1,38 @@
-import {useState, useEffect} from 'react'
-import axios from 'axios'
+import { useEffect, useState } from "react";
+import { getAllPlayers } from "../API/index"
+import { useNavigate } from "react-router-dom";
 
-const API_URL = 'https://fsa-puppy-bowl.herokuapp.com/api/bdugger04/players'
 
+// This function takes the fetch get requst from index.jsx and it then is run through the .map and put into our useState 
 
-export default function AllPlayers (){
-  
+export default function AllPlayers() {
   const [players, setPlayers] = useState([])
+  const navigate = useNavigate()
 
+  getAllPlayers() // fetch function to retrieve all puppies
+  
   useEffect(() => {
-    
-    async function fetchPlayers(){
-     try { 
-      
-      
-    }catch (e){
-      console.error(e)
+    async function updatePlayers() {
+      try {
+        const players = await getAllPlayers()
+        console.log('players', players)
+        setPlayers(players)
+      } catch (e) {
+        console.error(e)
+      }
     }
-    }
-    fetchPlayers()
+    updatePlayers()
   }, [])
 
-  console.log(players)
- 
-  if(players.length === 0){
-    return <h1>Loading items ...</h1>
-  }
-
-  return (
-    <div> hello </div>
-  )
+  return <main>{
+    players.map((player) => {
+      return <article key={player.id}>
+       
+        <h2 onClick={() => navigate(`/players/${player.id}`)}> 
+          <img src={player.imageUrl} />
+          {player.name}
+        </h2>
+      </article>
+    })
+  }</main>
 }
