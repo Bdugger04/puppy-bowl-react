@@ -15,7 +15,6 @@ export default function AllPlayers() {
     async function updatePlayers() {
       try {
         const players = await getAllPlayers()
-        console.log('players', players)
         setPlayers(players)
       } catch (e) {
         console.error(e)
